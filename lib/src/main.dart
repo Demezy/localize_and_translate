@@ -92,7 +92,13 @@ class LocalizeAndTranslate {
   ///---
   Future<dynamic> initLanguage(String languageCode) async {
     final String filePath = '$_assetsDir$languageCode.json';
-    final String contentString = await rootBundle.loadString(filePath);
+    String contentString;
+    try {
+      contentString = await rootBundle.loadString(filePath);
+    } catch (_) {
+      contentString =
+          await rootBundle.loadString('$_assetsDir${_langList[0]}.json');
+    }
     final dynamic data = json.decode(contentString);
     return data;
   }
